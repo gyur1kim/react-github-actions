@@ -116,11 +116,35 @@
 ## yml 파일 완성하기
 
 - `steps` 에서, `npm test`까지 무사히 완료되면 소스 코드를 S3 버킷에 업로드하도록 workflow 작성
+  
+  ```javascript
+  - uses: awact/s3-action@master
+    with:
+    args: --acl public-read --follow-symlinks --delete
+    env:
+    SOURCE_DIR: './build'
+    AWS_REGION: 'us-northeast-2'
+    AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  ```
 
 - **IAM (Identity and Access Management)**
+  
+  - [IAM](https://us-east-1.console.aws.amazon.com/iamv2/home?region=ap-northeast-2#/home)
   
   - AWS 리소스에 대한 액세스를 안전하게 제어할 수 있는 웹 서비스
   
   - IAM을 사용하여 리소스를 사용하도록 인증 및 권한부여된 대상을 제어
   
-  - IAM 사용자는 루트 사용자가 부여한 권한만 가진다
+  - IAM 사용자는 **루트 사용자가 부여한 권한**만 가진다
+    
+    - 여기서는 해당 yml 파일에 S3 권한을 줬다. (Access key 등)
+
+- `secrets` 값은 settings에서 설정할 것
+  
+  - Secrets and variables -> Actions
+
+
+
+### 👉 실습 배포 주소 : http://react-github-action-bucket.s3-website.ap-northeast-2.amazonaws.com/
